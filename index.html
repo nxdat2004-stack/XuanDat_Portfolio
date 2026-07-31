@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nong Xuan Dat — Idea Creator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  [id] { scroll-margin-top: 84px; }
+  :root { --shadow-sm: 0 1px 2px rgba(10,19,23,.05), 0 1px 1px rgba(10,19,23,.03); --shadow-md: 0 6px 20px rgba(10,19,23,.06), 0 1px 3px rgba(10,19,23,.04); --shadow-lg: 0 24px 48px rgba(10,19,23,.10), 0 2px 8px rgba(10,19,23,.05); --blue-grad: linear-gradient(125deg, #0064e0 0%, #0081fb 55%, #00c2ff 100%); }
+  body { font-family: Montserrat, Helvetica, Arial, sans-serif; color: #1c1e21; background: #ffffff; text-wrap: pretty; }
+  a { color: #0a1317; text-decoration: none; }
+  a:hover { color: #444950; }
+  ::selection { background: #0a1317; color: #ffffff; }
+  ul { list-style: none; }
+  img { display: block; max-width: 100%; }
+  .bg-cover { background-size: cover; background-position: center; background-repeat: no-repeat; }
+  .serif { font-family: 'Newsreader', Georgia, serif; }
+  .eyebrow { display: inline-flex; align-items: center; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: #0064e0; text-transform: uppercase; margin-bottom: 10px; }
+  .h2 { font-family: 'Newsreader', Georgia, serif; font-size: 42px; font-weight: 600; line-height: 1.2; letter-spacing: -0.4px; color: #0a1317; }
+  .h3 { font-family: 'Newsreader', Georgia, serif; font-size: 25px; font-weight: 600; line-height: 1.32; color: #0a1317; }
+  .body-md { font-size: 16px; line-height: 1.6; letter-spacing: -0.16px; color: #444950; }
+  .body-sm { font-size: 13px; line-height: 1.5; letter-spacing: -0.1px; color: #5d6c7b; }
+  .pill-tab { font-size: 14px; font-weight: 700; letter-spacing: -0.14px; padding: 8px 16px; border-radius: 100px; border: 1px solid #ced0d4; color: #1c1e21; background: #ffffff; transition: background .15s ease, border-color .15s ease; }
+  .pill-tab:hover { background: #f1f4f7; border-color: #0a1317; }
+  .btn-primary { display: inline-flex; align-items: center; justify-content: center; background: var(--blue-grad); color: #fff; font-size: 14px; font-weight: 700; letter-spacing: -0.14px; padding: 14px 30px; border-radius: 100px; border: none; cursor: pointer; transition: filter .15s ease, transform .15s ease; box-shadow: 0 8px 20px rgba(0,100,224,.28); }
+  .btn-primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
+  .btn-secondary { display: inline-flex; align-items: center; justify-content: center; background: transparent; color: #0a1317; font-size: 14px; font-weight: 700; letter-spacing: -0.14px; padding: 12px 28px; border-radius: 100px; border: 2px solid #0a1317; cursor: pointer; transition: background .15s ease, color .15s ease; }
+  .btn-secondary:hover { background: #0a1317; color: #fff; }
+  .card { background: #ffffff; border: 1px solid #e7eaee; border-radius: 32px; padding: 40px; box-shadow: var(--shadow-md); }
+  .tile { background: #ffffff; border: 1px solid #e7eaee; border-radius: 16px; padding: 22px; box-shadow: var(--shadow-sm); transition: transform .18s ease, box-shadow .18s ease; min-width: 0; }
+  .tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+  .tile-dark { background: #0a1317; border-radius: 16px; padding: 22px; box-shadow: var(--shadow-sm); }
+  .tile-accent { background: var(--blue-grad); border-radius: 16px; padding: 22px; box-shadow: 0 8px 20px rgba(0,100,224,.22); }
+  .badge { display: inline-flex; align-items: center; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 100px; background: #31a24c; color: #fff; }
+  .chip { background: #f1f4f7; border: 1px solid #e7eaee; border-radius: 100px; padding: 7px 14px; font-size: 13px; font-weight: 600; color: #1c1e21; transition: background .15s ease, color .15s ease; }
+  .chip:hover { background: #0064e0; color: #fff; }
+  .row-table { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; padding: 12px 20px; border-top: 1px solid #dee3e9; align-items: center; gap: 10px; }
+  .row-head { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; padding: 10px 20px; background: #f1f4f7; gap: 10px; }
+  .cell-label { font-size: 11px; font-weight: 700; color: #1c1e21; text-transform: uppercase; letter-spacing: 0.06em; }
+  .divider { border-top: 3px solid #0a1317; margin-bottom: 32px; }
+  .stat-num { font-size: clamp(20px, 7vw, 40px); font-weight: 700; letter-spacing: -1px; overflow-wrap: break-word; }
+  .stat-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .toc-item { display: flex; align-items: center; gap: 14px; padding: 16px 0; border-bottom: 1px solid #dee3e9; }
+  .toc-item:last-child { border-bottom: none; }
+  .funnel-step { position: relative; background: #f1f4f7; border-radius: 10px; margin: 0 auto; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 14px 0; }
+  .reveal { opacity: 1; transition: opacity .6s ease, transform .6s ease; }
+  .reveal.pre-reveal { opacity: 0; transform: translateY(28px); }
+  .reveal.in-view { opacity: 1; transform: translateY(0); }
+  nav.site-nav { transition: transform .35s ease, opacity .35s ease; }
+  nav.site-nav.nav-hidden { transform: translateY(-100%); opacity: 0; }
+  @media (max-width: 767px) {
+    .nav-pills { display: none !important; }
+    .hero-title { font-size: 32px !important; }
+    .feature-grid { grid-template-columns: 1fr !important; }
+    .stat-grid { grid-template-columns: 1fr 1fr !important; }
+    .stat-grid > *:last-child:nth-child(3) { grid-column: 1 / -1 !important; }
+    .split { grid-template-columns: 1fr !important; }
+    .row-table, .row-head { grid-template-columns: 2fr 1fr 1fr; }
+    .row-table > div:nth-child(4), .row-table > div:nth-child(5),
+    .row-head > div:nth-child(4), .row-head > div:nth-child(5) { display: none; }
+    .funnel-viz > div:nth-child(1) { width: 100% !important; }
+    .funnel-viz > div:nth-child(3) { width: 88% !important; }
+    .funnel-viz > div:nth-child(5) { width: 76% !important; }
+    .funnel-viz > div:nth-child(7) { width: 64% !important; }
+    .funnel-viz > div:nth-child(odd) { clip-path: polygon(2% 0,98% 0,100% 100%,0 100%) !important; padding: 10px 6px !important; }
+    .funnel-viz > div:nth-child(odd) .body-sm { font-size: 10px !important; line-height: 1.3 !important; }
+    .funnel-viz > div:nth-child(odd) > div:first-child { font-size: 10.5px !important; }
+    .card { padding: 24px; }
+  }
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .feature-grid { grid-template-columns: 1fr 1fr !important; }
+    .nav-pills { display: none !important; }
+    .stat-grid { grid-template-columns: repeat(3,1fr) !important; }
+    .stat-num { font-size: 24px !important; }
+  }
+
+  @media (max-width: 1023px) {
+    section[style*="padding:32px 0 80px"] > div, section[style*="padding: 32px 0 80px"] > div { padding: 0 24px !important; }
+    .feature-grid { grid-template-columns: repeat(2,1fr) !important; }
+    .feature-grid > *:last-child:nth-child(odd) { grid-column: 1 / -1 !important; }
+  }
+  .feature-grid.row-fixed { grid-template-columns: repeat(3,1fr) !important; }
+  .feature-grid.row-fixed > *:last-child { grid-column: auto !important; }
+  @media (max-width: 480px) {
+    .row-fixed { gap: 6px !important; }
+  }
+  @media (max-width: 767px) {
+    nav.site-nav { padding: 0 16px !important; }
+    #top { grid-template-columns: 1fr !important; padding: 36px 20px 28px !important; gap: 20px !important; }
+    .hero-image { order: -1; max-width: 260px; margin: 0 auto; }
+    .hero-name { font-size: 34px !important; }
+    .hero-sub { font-size: 18px !important; }
+    #toc { padding: 0 16px 40px !important; }
+    #toc > div { padding: 36px 20px !important; }
+    .contents-title { font-size: 34px !important; margin-bottom: 24px !important; }
+    .toc-num { font-size: 26px !important; min-width: 34px !important; }
+    #skills, #ant, #hoa, #sic { padding-left: 0 !important; padding-right: 0 !important; }
+  #skills > *, #ant > *, #hoa > *, #sic > * { padding-left: 16px !important; padding-right: 16px !important; }
+    .role-title { font-size: 26px !important; }
+    .big-num { font-size: 32px !important; }
+    .contact-title { font-size: 30px !important; }
+    #contact { padding: 48px 20px !important; }
+    .stat-grid { grid-template-columns: 1fr 1fr !important; }
+    .mockup-compare { gap: 10px !important; }
+    .mockup-item { max-width: 130px !important; }
+    .ai-compare { gap: 10px !important; }
+    .ai-item { max-width: 145px !important; }
+    .card { padding: 20px !important; }
+    .tile { padding: 16px !important; }
+    .capture-row { gap: 8px !important; }
+    .capture-num { font-size: 15px !important; }
+    .capture-arrow { font-size: 13px !important; }
+    .video-label { font-size: 16px !important; }
+    iframe#concept12-frame { min-height: 700px; }
+  }
+  @media (max-width: 600px) {
+    .split { grid-template-columns: 1fr !important; }
+    .adcopy-grid { grid-template-columns: 1fr !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="site-nav" style="position:sticky;top:0;z-index:50;background:linear-gradient(120deg,#eaf2ff,#f6f9ff);border-bottom:1px solid #dbe7fb;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px">
+  <a href="#top" style="font-size:16px;font-weight:700;letter-spacing:-0.16px;color:#0a1317">NÔNG XUÂN ĐẠT</a>
+  <div class="nav-pills" style="display:flex;gap:8px">
+    <a class="pill-tab" href="#skills">What I Work On</a>
+    <a class="pill-tab" href="#ant">Ant Commerce Co. Ltd</a>
+    <a class="pill-tab" href="#hoa">HOA.PLAYER</a>
+    <a class="pill-tab" href="#sic">SIC-FTU</a>
+    <a class="pill-tab" href="#contact">Contact</a>
+  </div>
+  <a class="btn-primary" href="#contact" style="padding:10px 22px;font-size:13px">Get in touch</a>
+</nav>
+
+<!-- Hero -->
+<section id="top" style="position:relative;max-width:1280px;margin:0 auto;padding:72px 32px 40px;display:grid;grid-template-columns:1fr 360px;gap:48px;align-items:center;overflow:hidden" data-screen-label="Hero">
+  <div style="position:absolute;top:-160px;right:-120px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(0,129,251,.20),rgba(0,194,255,.08) 60%,transparent 72%);filter:blur(10px);pointer-events:none;z-index:0"></div>
+  <div style="position:relative;z-index:1">
+    <div class="eyebrow">HANOI, VIETNAM</div>
+    <h1 class="hero-title" style="line-height:1.15;letter-spacing:-1px;color:#0a1317;margin-bottom:20px">
+      <span class="hero-name" style="display:block;font-family:'Newsreader',Georgia,serif;font-size:56px;font-weight:600">I'm Nong Xuan Dat</span>
+      <span class="hero-sub" style="display:block;font-size:28px;font-weight:500;margin-top:8px">I turn a product into a reason people want to buy it.</span>
+    </h1>
+    <p class="body-md" style="font-size:17px;margin-bottom:28px"><b>Marketer</b> with 1+ years of experience translating customer insight and market trends into content strategy and conversion copywriting for the US market. Skilled in applying AI (ChatGPT, Midjourney, Claude) across the full content production pipeline: from research and ideation to multi-channel ad optimization.<br></br>Seeking to grow within an international, fast-paced SaaS/E-commerce environment.</p>
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <a class="btn-primary" href="#toc">See what's inside</a>
+      <a class="btn-secondary" href="#contact">Get in touch</a>
+    </div>
+  </div>
+  <div class="bg-cover hero-image" style="position:relative;z-index:1;width:100%;aspect-ratio:4/5;border-radius:32px;box-shadow:var(--shadow-lg);background-image:url('./jtp05867_-2--mqkna9ko.jpg')"></div>
+</section>
+
+<!-- Table of contents -->
+<section id="toc" style="padding:0 32px 56px" data-screen-label="Contents">
+  <div style="position:relative;overflow:hidden;max-width:1280px;margin:0 auto;border-radius:32px;background:linear-gradient(135deg,#dce9ff 0%,#eef4ff 55%,#f8fbff 100%);padding:56px 48px">
+    <div style="position:absolute;top:-140px;right:-110px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(0,129,251,.22),rgba(0,194,255,.08) 60%,transparent 72%);filter:blur(6px);pointer-events:none"></div>
+    <div class="contents-title" style="position:relative;font-size:52px;font-weight:800;color:#0a1317;letter-spacing:-1.5px;margin-bottom:36px">Contents</div>
+    <div style="position:relative;display:grid;grid-template-columns:1fr 1fr;gap:16px" class="split">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <a href="#skills" style="display:flex;align-items:center;gap:20px;background:#fff;border-radius:20px;padding:22px 24px;box-shadow:var(--shadow-sm)">
+          <div class="toc-num" style="font-size:36px;font-weight:800;color:#0a1317;flex-shrink:0;min-width:48px">01</div>
+          <div><div style="font-size:16px;font-weight:700;color:#0a1317;margin-bottom:2px">What I Work On</div><div class="body-sm">Skills, method, how I think about a project</div></div>
+        </a>
+        <a href="#ant" style="display:flex;align-items:center;gap:20px;background:#fff;border-radius:20px;padding:22px 24px;box-shadow:var(--shadow-sm)">
+          <div class="toc-num" style="font-size:36px;font-weight:800;color:#0064e0;flex-shrink:0;min-width:48px">02</div>
+          <div><div style="font-size:16px;font-weight:700;color:#0a1317;margin-bottom:2px">Ant Commerce Co. Ltd</div><div class="body-sm">Big idea, Meta Ads, AI visual pipeline, email, video, 2025–2026</div></div>
+        </a>
+        <a href="#hoa" style="display:flex;align-items:center;gap:20px;background:#fff;border-radius:20px;padding:22px 24px;box-shadow:var(--shadow-sm)">
+          <div class="toc-num" style="font-size:36px;font-weight:800;color:#1e3a8a;flex-shrink:0;min-width:48px">03</div>
+          <div><div style="font-size:16px;font-weight:700;color:#0a1317;margin-bottom:2px">HOA.PLAYER</div><div class="body-sm">Campaign visuals and retention diagnosis, 2024–2025</div></div>
+        </a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <a href="#sic" style="display:flex;align-items:center;gap:20px;background:#fff;border-radius:20px;padding:22px 24px;box-shadow:var(--shadow-sm)">
+          <div class="toc-num" style="font-size:36px;font-weight:800;color:#0284c7;flex-shrink:0;min-width:48px">04</div>
+          <div><div style="font-size:16px;font-weight:700;color:#0a1317;margin-bottom:2px">SIC-FTU</div><div class="body-sm">Leading a 15-person team, 2022–2024</div></div>
+        </a>
+        <a href="#contact" style="display:flex;align-items:center;gap:20px;background:#fff;border-radius:20px;padding:22px 24px;box-shadow:var(--shadow-sm)">
+          <div class="toc-num" style="font-size:36px;font-weight:800;color:#0a1317;flex-shrink:0;min-width:48px">05</div>
+          <div><div style="font-size:16px;font-weight:700;color:#0a1317;margin-bottom:2px">Contact</div><div class="body-sm">Email or phone</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- What I Work On -->
+<section id="skills" style="max-width:1280px;margin:0 auto;padding:0 32px 64px" data-screen-label="What I Work On">
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
+    <div style="width:52px;height:52px;border-radius:14px;background:#0a1317;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;flex-shrink:0">01</div>
+    <div class="eyebrow" style="margin-bottom:0">WHAT I WORK ON</div>
+  </div>
+  <div style="border-top:1px solid #dee3e9;margin-bottom:32px"></div>
+  <h2 class="h2" style="margin-bottom:20px;max-width:680px">Understand the customer.<br>Say it back clearly.<br>Prove it moved a number.</h2>
+  <p class="serif" style="font-size:19px;font-style:italic;color:#444950;max-width:620px;margin-bottom:32px;line-height:1.5">A rule I keep coming back to: <b>if the customer wouldn't say it about themselves, it doesn't belong in the copy.</b></p>
+  <div class="feature-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+    <div class="tile">
+      <div class="eyebrow" style="font-size:10px">CONCEPT</div>
+      <div class="h3" style="margin-bottom:6px">Brand storytelling</div>
+      <p class="body-sm">One idea, consistent across ad, email, and packaging. The tell that it's working: support tickets start repeating it back, unprompted.</p>
+    </div>
+    <div class="tile">
+      <div class="eyebrow" style="font-size:10px">PERFORMANCE</div>
+      <div class="h3" style="margin-bottom:6px">Ad copy that scales</div>
+      <p class="body-sm">Hooks and CTAs built to win a split test, not a design review. A line that sounds clever in a meeting rarely survives real budget.</p>
+    </div>
+    <div class="tile">
+      <div class="eyebrow" style="font-size:10px">PRODUCTION</div>
+      <div class="h3" style="margin-bottom:6px">Email, CRM, and video</div>
+      <p class="body-sm">One goal per send, plus an AI video pipeline a small team can run alone.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ANT COMMERCE ============ -->
+<div id="work" style="position:relative;top:-1px"></div>
+<section id="ant" style="background:linear-gradient(180deg,#e7f1ff 0%,#f3f8ff 55%,#f7fafd 100%);padding:32px 0 80px" data-screen-label="ANT Commerce">
+<div style="max-width:1280px;margin:0 auto;padding:0 32px">
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+    <div style="width:52px;height:52px;border-radius:14px;background:var(--blue-grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;flex-shrink:0;box-shadow:0 8px 20px rgba(0,100,224,.28)">02</div>
+    <div class="eyebrow" style="margin-bottom:0;color:#0064e0;font-size:15px">ANT COMMERCE CO. LTD</div>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:20px">
+      <div>
+        <div class="eyebrow" style="color:#0064e0">APR 2025 – JUN 2026 · E-COMMERCE</div>
+        <h3 class="role-title" style="font-family:'Newsreader',Georgia,serif;font-size:36px;font-weight:600;letter-spacing:-0.5px;color:#0a1317">Idea Creator</h3>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;max-width:260px">
+        <span class="chip" style="font-size:12px;padding:5px 12px">Shopify</span>
+        <span class="chip" style="font-size:12px;padding:5px 12px">Klaviyo</span>
+        <span class="chip" style="font-size:12px;padding:5px 12px">Judge.me</span>
+        <span class="chip" style="font-size:12px;padding:5px 12px">Loox</span>
+        <span class="chip" style="font-size:12px;padding:5px 12px">Customily</span>
+        <span class="chip" style="font-size:12px;padding:5px 12px">TeeInBlue</span>
+      </div>
+    </div>
+
+    <p class="body-md" style="max-width:720px;margin-bottom:16px">I own the big idea for each collection and follow it through the ad, the copy, the imagery, and the email, until the number proves it worked.</p>
+
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px">
+      <span class="chip">Big Idea &amp; Brand Concept</span>
+      <span class="chip">Meta Ads &amp; Performance</span>
+      <span class="chip">Ad Copywriting</span>
+      <span class="chip">AI Visual &amp; Video</span>
+      <span class="chip">Email / CRM</span>
+    </div>
+
+    <!-- Highlights -->
+    <div class="reveal">
+    <div class="eyebrow">HIGHLIGHTS</div>
+    <div class="stat-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:48px">
+      <div class="tile" style="text-align:center">
+        <div class="stat-label" style="color:#5d6c7b">Revenue</div>
+        <div class="stat-num" style="color:#0064e0;font-size:clamp(26px,5vw,44px)">$1.3M+</div>
+      </div>
+      <div class="tile" style="text-align:center">
+        <div class="stat-label" style="color:#5d6c7b">Email Open Rate</div>
+        <div class="stat-num" style="color:#0064e0;font-size:clamp(26px,5vw,44px)">56.3%</div>
+      </div>
+      <div class="tile" style="text-align:center">
+        <div class="stat-label" style="color:#5d6c7b">Ad CTR</div>
+        <div class="stat-num" style="color:#0064e0;font-size:clamp(26px,5vw,44px)">2.51%</div>
+      </div>
+    </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px;margin:40px 0"><div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,#dbe7fb 15%,#dbe7fb 85%,transparent)"></div><div style="width:6px;height:6px;border-radius:50%;background:#0064e0;flex-shrink:0"></div><div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,#dbe7fb 15%,#dbe7fb 85%,transparent)"></div></div>
+
+    <!-- Ad copy -->
+    <div class="reveal">
+    <div class="eyebrow">AD COPY LEARNINGS</div>
+    <div class="tile-dark" style="padding:28px;margin-bottom:48px">
+      <h4 class="h3" style="color:#fff;margin-bottom:8px">Fact tells, story sells.</h4>
+      <div class="serif" style="font-size:19px;font-style:italic;color:rgba(255,255,255,.75);margin-bottom:16px">Customers don't buy features. They buy the feeling a product was made for them.</div>
+      <div class="split" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div style="background:#fff;border-radius:16px;padding:20px">
+          <div class="stat-label" style="color:#5d6c7b">Stopped working</div>
+          <div style="font-size:13px;font-style:italic;color:#444950">"Premium leather bag..." · "Shop now" · size, material, price</div>
+        </div>
+        <div style="background:#0064e0;border-radius:16px;padding:20px">
+          <div class="stat-label" style="color:rgba(255,255,255,.85)">Scaled</div>
+          <div style="font-size:13px;font-style:italic;color:#fff">"Some bags you have to claim." · "Own a piece of heritage." · culturally specific, written for Black women</div>
+        </div>
+      </div>
+
+      <div class="stat-label" style="color:rgba(255,255,255,.7);margin-top:28px;margin-bottom:12px">Sample Ad Copy</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px" class="feature-grid adcopy-grid">
+        <div style="background:#fff;border-radius:16px;padding:20px">
+          <div class="eyebrow" style="font-size:10px;margin-bottom:10px">COLOR WITH A HISTORY</div>
+          <p style="font-size:13px;line-height:1.6;color:#1c1e21;white-space:pre-line">You already knew this color.
+Long before it showed up on any runway.
+Long before anyone called it a trend.
+
+Terra cotta is the color of something older.
+Walls. Earth. Ceremony.
+The kind of thing that lives in you before you have a name for it.
+
+[PRODUCT NAME] was drawn from that place.
+Not styled to look like heritage, drawn from it.
+The symbols. The portrait. The warmth that doesn't wash out.
+
+You pick it up and something clicks.
+Not because it's pretty.
+Because it's familiar.
+
+Premium leather. Red velvet interior. Gold-toned hardware.
+👉 [LINK]
+#BlackOwned #LeatherBag #AncestralReign #BuyBlack #BlackGirlMagic</p>
+        </div>
+        <div style="background:#fff;border-radius:16px;padding:20px">
+          <div class="eyebrow" style="font-size:10px;margin-bottom:10px">ORIGIN OVER APPROPRIATION</div>
+          <p style="font-size:13px;line-height:1.6;color:#1c1e21;white-space:pre-line">Every few years, fashion finds something that's been yours all along.
+They name it.
+They neutralize it.
+Sell it back to the world at a premium.
+
+[PRODUCT NAME] wasn't pulled from a mood board.
+The artist started with the portrait.
+The lineage. The symbols.
+And built outward from there.
+
+The bag exists because the woman existed first.
+That's not a marketing angle.
+That's the only way this could have been made.
+
+Deep terra cotta. Original artwork.
+4.94★ from 2,768 buyers who already know the difference.
+👉 [LINK]
+#BlackOwned #LeatherBag #AncestralReign #BuyBlack #BlackGirlMagic</p>
+        </div>
+        <div style="background:#fff;border-radius:16px;padding:20px">
+          <div class="eyebrow" style="font-size:10px;margin-bottom:10px">MADE FOR HER LEGACY</div>
+          <p style="font-size:13px;line-height:1.6;color:#1c1e21;white-space:pre-line">You learned how to hold yourself from watching someone else do it first.
+The way she walked into a room.
+The way she never shrank.
+The way she made everything she touched last longer than it was supposed to.
+
+[PRODUCT NAME] was made with that kind of woman in mind.
+The ones who give everything, and rarely receive something that matches what they gave.
+
+Terra cotta deep enough to mean something.
+Symbols pressed into leather that doesn't fade.
+A bag made to last the season it was bought in.
+Give her something that carries weight. The good kind.
+
+4.94★ · Premium leather · Red velvet lining
+👉 [LINK]
+#BlackOwned #LeatherBag #AncestralReign #BuyBlack #BlackGirlMagic</p>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px;margin:40px 0"><div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,#dbe7fb 15%,#dbe7fb 85%,transparent)"></div><div style="width:6px;height:6px;border-radius:50%;background:#0064e0;flex-shrink:0"></div><div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,#dbe7fb 15%,#dbe7fb 85%,transparent)"></div></div>
+
+    <!-- Email -->
+    <div class="reveal">
+    <div class="eyebrow">EMAIL PROGRAM</div>
+    <h4 class="h3" style="margin-bottom:20px">Email, run like a channel, not an afterthought</h4>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px" class="stat-grid">
+      <div class="tile-dark">
+        <div class="stat-label" style="color:#fff">Open rate</div>
+        <div class="stat-num" style="color:#fff">56.3%</div>
+        <div class="body-sm" style="color:rgba(255,255,255,.7);margin-top:6px">1.5× benchmark</div>
+      </div>
+      <div class="tile-accent">
+        <div class="stat-label" style="color:#fff">Order rate</div>
+        <div class="stat-num" style="color:#fff">0.145%</div>
+        <div class="body-sm" style="color:rgba(255,255,255,.85);margin-top:6px">1.8× benchmark</div>
+      </div>
+      <div class="tile">
+        <div class="stat-label" style="color:#5d6c7b">Click rate</div>
+        <div class="stat-num" style="color:#0a1317">1.22%</div>
+        <div class="body-sm" style="margin-top:6px">Below benchmark, still iterating</div>
+      </div>
+    </div>
+
+    <!-- Email mock -->
+    <div class="eyebrow">CAMPAIGN EMAILS</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px" class="split">
+      <div class="tile" style="padding:28px">
+        <div class="stat-label" style="color:#0064e0">New Collection · win-back</div>
+        <p style="font-size:13px;line-height:1.7;color:#1c1e21;white-space:pre-line">My friend,
+
+Two week ago, we closed the 60% off campaign for the Personalized Collection.
+More than a hundred women ordered a bag with their name on it.
+
+We watched it happen in real time -
+order after order, each one a different name.
+Each one a different woman who decided
+she deserved something made specifically for her.
+
+That felt like enough.</p>
+        <div style="border:1px dashed #adcdfc;border-radius:8px;padding:10px;text-align:center;font-size:11px;color:#0064e0;margin:14px 0">[IMAGE]</div>
+        <p style="font-size:13px;line-height:1.7;color:#1c1e21;white-space:pre-line">Then the messages kept coming.
+
+Not orders - questions.
+
+<em>"Is the 60% still available?"</em>
+<em>"I missed it - is there another chance?"</em>
+<em>"I've been thinking about it since I saw the email."</em>
+
+More than we expected.
+A lot more.
+
+We want to be honest with you.
+
+<strong>The 60% off is not coming back.</strong>
+
+That was a one-time decision -
+made because we wanted more women
+to carry their name without having to choose between that
+and everything else life costs.
+
+We meant it when we said it was once.
+We still mean it.
+
+But the messages didn't stop.
+And we kept reading them.
+
+What do you actually want from us next?
+
+We realized we'd been making decisions
+without asking the people who matter most.
+
+So we're asking now.
+
+It takes 2 minutes.
+Three questions.
+No wrong answers.
+
+And because you took the time to talk to us -
+<strong>you'll receive a 30% off code the moment you finish.</strong>
+
+No catch. No expiry.
+Use it whenever you're ready.</p>
+        <div style="text-align:center;margin:20px 0">
+          <a href="#" style="color:#0064e0;font-weight:700;text-decoration:underline;font-size:13px">Tell us what you want</a>
+        </div>
+        <p style="font-size:13px;line-height:1.7;color:#1c1e21;white-space:pre-line">- [Brand's name] ✨
+P.S. Over a hundred women already have their name on a bag. Yours is still waiting.</p>
+      </div>
+      <div class="tile" style="padding:28px">
+        <div class="stat-label" style="color:#0064e0">Mother's Day</div>
+        <p style="font-size:13px;line-height:1.7;color:#1c1e21;white-space:pre-line">Good morning my friend,
+
+A customer sent me this photo with a note I can't stop thinking about.
+
+She said,
+<em>"I got this for my mom… and she hasn't put it down since."</em></p>
+        <div style="border:1px dashed #adcdfc;border-radius:8px;padding:10px;text-align:center;font-size:11px;color:#0064e0;margin:14px 0">[IMAGE]</div>
+        <p style="font-size:13px;line-height:1.7;color:#1c1e21;white-space:pre-line">Because moms are hard to shop for -
+not because they want much,
+but because they've spent years putting everyone else first.
+
+Giving so much of themselves,
+it almost starts to look ordinary.
+
+So when it's your turn to give something back,
+<em>"something nice" isn't enough.</em>
+
+<strong>It has to feel right.</strong>
+Like it was chosen with her in mind.
+
+And that's when a gift like this makes sense.
+
+Yes, it's beautiful.
+But more importantly, it fits into her life.
+
+Not something she saves for a special occasion -
+something she reaches for before church, dinner, or a quick day out.
+
+That's what makes it special.
+
+Because it doesn't just get admired.
+<strong>It gets worn. It gets loved. It gets used.</strong></p>
+        <div style="text-align:center;margin:20px 0">
+          <a href="#" style="color:#0064e0;font-weight:700;text-decoration:underline;font-size:13px">Find the one she won't want to put down</a>
+        </div>
+        <p style="font-size:13px;line-height:1.7;color:#1c1e21;white-space:pre-line">- [Brand's name]
+P.S. The best gifts for moms are rarely the loudest ones - just the ones they end up wearing again and again.</p>
+      </div>
+    </div>
+
+    <div style="font-size:13px;font-weight:700;margin-bottom:12px">Email capture form → revenue, first 7 days</div>
+    <div class="tile" style="margin-bottom:48px">
+      <div class="capture-row" style="display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:nowrap">
+        <div style="text-align:center;min-width:0"><div class="capture-num" style="font-size:22px;font-weight:700">2.1K</div><div class="body-sm" style="font-size:11px">Views</div></div>
+        <div class="capture-arrow" style="color:#8595a4;font-size:18px;flex-shrink:0">→</div>
+        <div style="text-align:center;min-width:0"><div class="capture-num" style="font-size:22px;font-weight:700">249</div><div class="body-sm" style="font-size:11px">Submissions</div></div>
+        <div class="capture-arrow" style="color:#8595a4;font-size:18px;flex-shrink:0">→</div>
+        <div style="text-align:center;min-width:0"><div class="capture-num" style="font-size:22px;font-weight:700;color:#0064e0">11.93%</div><div class="body-sm" style="font-size:11px">Fill rate</div></div>
+        <div class="capture-arrow" style="color:#8595a4;font-size:18px;flex-shrink:0">→</div>
+        <div style="text-align:center;min-width:0"><div class="capture-num" style="font-size:22px;font-weight:700;color:#0064e0">$2,200</div><div class="body-sm" style="font-size:11px">Revenue, 7 days</div></div>
+      </div>
+    </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px;margin:40px 0"><div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,#dbe7fb 15%,#dbe7fb 85%,transparent)"></div><div style="width:6px;height:6px;border-radius:50%;background:#0064e0;flex-shrink:0"></div><div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,#dbe7fb 15%,#dbe7fb 85%,transparent)"></div></div>
+
+    <!-- Concept R&D -->
+    <div class="reveal">
+    <div class="eyebrow">BIG IDEAS BY COLLECTION</div>
+    <h4 class="h3" style="margin-bottom:8px">12 concept lines, one idea each</h4>
+    <p class="body-sm" style="max-width:680px;margin-bottom:24px">Heritage, faith, sisterhood, motherhood: each concept picked one emotional territory and held it from headline to product photo.</p>
+    <div style="margin-bottom:48px">
+      <iframe id="concept12-frame" src="./12-concept-lines-hapas.html" scrolling="no" style="width:100%;border:none;display:block;height:900px" title="12 Concept Lines"></iframe>
+    </div>
+    <script>window.addEventListener('message',function(e){if(e.data&&e.data.h){var f=document.getElementById('concept12-frame');if(f){f.style.height=e.data.h+'px';}}});</script>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px;margin:40px 0"><div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,#dbe7fb 15%,#dbe7fb 85%,transparent)"></div><div style="width:6px;height:6px;border-radius:50%;background:#0064e0;flex-shrink:0"></div><div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,#dbe7fb 15%,#dbe7fb 85%,transparent)"></div></div>
+
+    <!-- Mockup process -->
+    <div class="reveal">
+    <div class="eyebrow">MOCKUP CREATION</div>
+    <h4 class="h3" style="margin-bottom:8px">One product photo, six ready-to-list images</h4>
+    <p class="body-sm" style="max-width:680px;margin-bottom:20px">Prompted and generated through ChatGPT and Google AI Studio, from one plain photo.</p>
+    <div class="mockup-compare" style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:20px;flex-wrap:nowrap">
+      <div class="mockup-item" style="flex:1 1 0;min-width:0;max-width:176px"><div class="bg-cover mockup-img" style="width:100%;aspect-ratio:4/5;border-radius:16px;background-image:url('./53-mqj7wn8c.jpg')"></div><div class="body-sm" style="font-size:13px;margin-top:8px;text-align:center">Raw product photo</div></div>
+      <div style="font-size:30px;color:#8595a4;flex-shrink:0;font-weight:700">+</div>
+      <div class="mockup-item" style="flex:1 1 0;min-width:0;max-width:176px"><div class="bg-cover mockup-img" style="width:100%;aspect-ratio:4/5;border-radius:16px;background-image:url('./generated-image-june-06-2026---9_49am-mqizccf0.jpg')"></div><div class="body-sm" style="font-size:13px;margin-top:8px;text-align:center">Model reference used for the AI generation</div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:28px">
+      <div style="font-size:26px;color:#8595a4">↓</div>
+      <div class="body-sm" style="font-size:13px;color:#5d6c7b;text-align:center">Combined into one prompt in <strong>ChatGPT</strong>, then generated as images in <strong>Google AI Studio</strong></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:48px" class="feature-grid">
+      <div><div class="bg-cover" style="width:100%;aspect-ratio:4/5;border-radius:12px;background-image:url('./generated-image-june-06-2026---10_16am-mqizcvqn.jpg')"></div><div style="font-size:11px;font-weight:700;margin-top:6px;text-align:center">Hero</div></div>
+      <div><div class="bg-cover" style="width:100%;aspect-ratio:4/5;border-radius:12px;background-image:url('./generated_image_june_06_2026_-_10_25am-mqiziptb.jpg')"></div><div style="font-size:11px;font-weight:700;margin-top:6px;text-align:center">Close-up</div></div>
+      <div><div class="bg-cover" style="width:100%;aspect-ratio:4/5;border-radius:12px;background-image:url('./generated_image_june_06_2026_-_10_14am_1-mqizj3gs.jpg')"></div><div style="font-size:11px;font-weight:700;margin-top:6px;text-align:center">What's in My Bag</div></div>
+      <div><div class="bg-cover" style="width:100%;aspect-ratio:4/5;border-radius:12px;background-image:url('./generated-image-june-06-2026---9_56am-mqj252po.jpg')"></div><div style="font-size:11px;font-weight:700;margin-top:6px;text-align:center">Small</div></div>
+      <div><div class="bg-cover" style="width:100%;aspect-ratio:4/5;border-radius:12px;background-image:url('./generated-image-june-06-2026---10_20am-mqj25bs8.jpg')"></div><div style="font-size:11px;font-weight:700;margin-top:6px;text-align:center">Medium</div></div>
+      <div><div class="bg-cover" style="width:100%;aspect-ratio:4/5;border-radius:12px;background-image:url('./generated-image-june-06-2026---10_07am-mqj25xdj.jpg')"></div><div style="font-size:11px;font-weight:700;margin-top:6px;text-align:center">Large</div></div>
+    </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px;margin:40px 0"><div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,#dbe7fb 15%,#dbe7fb 85%,transparent)"></div><div style="width:6px;height:6px;border-radius:50%;background:#0064e0;flex-shrink:0"></div><div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,#dbe7fb 15%,#dbe7fb 85%,transparent)"></div></div>
+
+    <details class="expand-block">
+    <summary>See 4,800+ AI-generated visuals →</summary>
+    <div class="expand-body">
+    <!-- AI Visual -->
+    <div>
+    <div class="eyebrow">AI VISUAL GENERATION</div>
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px;flex-wrap:wrap">
+      <div class="big-num" style="font-size:44px;font-weight:600;color:#0064e0">4,800+</div>
+      <div class="body-sm">AI-generated images. No studio, no photographer, no set.</div>
+    </div>
+    <div class="ai-compare" style="display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:20px;flex-wrap:nowrap">
+      <div class="ai-item" style="flex:1 1 0;min-width:0;max-width:320px"><div class="bg-cover ai-img" style="width:100%;aspect-ratio:1/1;border-radius:18px;background-image:url('./53-mqj2n8qa.jpg')"></div><div class="body-sm" style="font-size:13px;margin-top:8px;text-align:center">Original plain mockup, straight off the production line</div></div>
+      <div style="font-size:26px;color:#8595a4;flex-shrink:0">→</div>
+      <div class="ai-item" style="flex:1 1 0;min-width:0;max-width:320px"><div class="bg-cover ai-img" style="width:100%;aspect-ratio:1/1;border-radius:18px;background-image:url('./majesty-known-premium-leather-handbag-qr-mqj825t9.jpg')"></div><div class="body-sm" style="font-size:13px;margin-top:8px;text-align:center">Same bag, reimagined by AI into a styled campaign shot</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:48px" class="feature-grid">
+      <div><div class="bg-cover" style="width:100%;aspect-ratio:1/1;border-radius:16px;background-image:url('./voices-of-glory-premium-leather-handbag--mqj0efi0.jpg')"></div><div class="body-sm" style="font-size:11px;margin-top:6px">Editorial Lifestyle</div></div>
+      <div><div class="bg-cover" style="width:100%;aspect-ratio:1/1;border-radius:16px;background-image:url('./dope-black-era-premium-leather-handbag-q-mqj0gw1k.jpg')"></div><div class="body-sm" style="font-size:11px;margin-top:6px">Outfit Flatlay</div></div>
+      <div><div class="bg-cover" style="width:100%;aspect-ratio:1/1;border-radius:16px;background-image:url('./personalized_7-mqj0hf27.jpg')"></div><div class="body-sm" style="font-size:11px;margin-top:6px">Product Review Photo</div></div>
+      <div><div class="bg-cover" style="width:100%;aspect-ratio:1/1;border-radius:16px;background-image:url('./ivory-saint-premium-leather-handbag-qr0x-mqj0iluj.jpg')"></div><div class="body-sm" style="font-size:11px;margin-top:6px">Monochrome Studio</div></div>
+      <div><div class="bg-cover" style="width:100%;aspect-ratio:1/1;border-radius:16px;background-image:url('./arden-luxe-premium-leather-handbag-7-mqj0jm58.jpg')"></div><div class="body-sm" style="font-size:11px;margin-top:6px">Authentic UGC</div></div>
+      <div><div class="bg-cover" style="width:100%;aspect-ratio:1/1;border-radius:16px;background-image:url('./generated-image-june-17-2026---3_14pm-mqj0ko75.jpg')"></div><div class="body-sm" style="font-size:11px;margin-top:6px">Banner Promo</div></div>
+    </div>
+    </div>
+    </div>
+  </details>
+  <details class="expand-block">
+    <summary>See detailed ad performance data (112 campaigns) →</summary>
+    <div class="expand-body">
+    <!-- Meta Ads -->
+    <div>
+    <div class="eyebrow">META ADS PERFORMANCE</div>
+    <h4 class="h3" style="margin-bottom:20px">112 campaigns, $172.9K spent</h4>
+    <div class="stat-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px">
+      <div class="tile-dark" style="color:#fff">
+        <div class="stat-label" style="color:rgba(255,255,255,.7)">Ad Spend</div>
+        <div class="stat-num" style="color:#fff">$172.9K</div>
+        <div class="body-sm" style="color:rgba(255,255,255,.7);margin-top:6px">154,626 clicks</div>
+      </div>
+      <div class="tile-accent">
+        <div class="stat-label" style="color:rgba(255,255,255,.85)">Purchases</div>
+        <div class="stat-num" style="color:#fff">2,773</div>
+        <div class="body-sm" style="color:rgba(255,255,255,.85);margin-top:6px">66.7% checkout rate</div>
+      </div>
+      <div class="tile">
+        <div class="stat-label" style="color:#5d6c7b">CTR</div>
+        <div class="stat-num" style="color:#0a1317">2.51%</div>
+        <div class="body-sm" style="margin-top:6px">62% above benchmark</div>
+      </div>
+      <div class="tile">
+        <div class="stat-label" style="color:#5d6c7b">CPC / CPM</div>
+        <div class="stat-num" style="color:#0a1317">$1.12</div>
+        <div class="body-sm" style="margin-top:6px">CPM $28.04, Q4 push</div>
+      </div>
+      <div class="tile">
+        <div class="stat-label" style="color:#5d6c7b">Overall CPA</div>
+        <div class="stat-num" style="color:#0a1317">$62.33</div>
+        <div class="body-sm" style="margin-top:6px">Higher AOV than benchmark</div>
+      </div>
+    </div>
+
+    <!-- Funnel visualization -->
+    <div class="tile" style="margin-bottom:24px">
+      <div class="stat-label" style="margin-bottom:4px">Conversion funnel</div>
+      <div class="body-sm" style="margin-bottom:24px;color:#5d6c7b">Awareness → engagement → conversion, stage-over-stage rate</div>
+      <div class="funnel-viz" style="display:flex;flex-direction:column;align-items:center;margin:0 auto 24px;max-width:720px">
+        <div style="width:100%;height:64px;background:#dbe9ff;clip-path:polygon(4% 0,96% 0,100% 100%,0 100%);display:flex;align-items:center;justify-content:center;flex-direction:column">
+          <div style="font-size:12px;font-weight:700;letter-spacing:.08em;color:#0064e0;text-transform:uppercase">Awareness</div>
+          <div class="body-sm" style="font-size:12px;color:#0a1317">154,626 clicks driven by the campaign</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 0;color:#8595a4">
+          <span style="font-size:18px">↓</span><span style="font-size:12px;font-weight:700">7.4% add to cart</span>
+        </div>
+        <div style="width:80%;height:60px;background:#adcdfc;clip-path:polygon(4% 0,96% 0,100% 100%,0 100%);display:flex;align-items:center;justify-content:center;flex-direction:column">
+          <div style="font-size:12px;font-weight:700;letter-spacing:.08em;color:#0a1317;text-transform:uppercase">Engagement</div>
+          <div class="body-sm" style="font-size:12px;color:#0a1317">Visitors who added an item to cart</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 0;color:#8595a4">
+          <span style="font-size:18px">↓</span><span style="font-size:12px;font-weight:700">36.3% to checkout</span>
+        </div>
+        <div style="width:60%;height:56px;background:#6ba3f7;clip-path:polygon(4% 0,96% 0,100% 100%,0 100%);display:flex;align-items:center;justify-content:center;flex-direction:column">
+          <div style="font-size:12px;font-weight:700;letter-spacing:.08em;color:#fff;text-transform:uppercase">Consideration</div>
+          <div class="body-sm" style="font-size:12px;color:rgba(255,255,255,.85)">Shoppers who started checkout</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 0;color:#8595a4">
+          <span style="font-size:18px">↓</span><span style="font-size:12px;font-weight:700">66.7% to purchase</span>
+        </div>
+        <div style="width:40%;height:52px;background:#0064e0;clip-path:polygon(4% 0,96% 0,100% 100%,0 100%);display:flex;align-items:center;justify-content:center;flex-direction:column">
+          <div style="font-size:12px;font-weight:700;letter-spacing:.08em;color:#fff;text-transform:uppercase">Conversion</div>
+          <div class="body-sm" style="font-size:12px;color:rgba(255,255,255,.85)">2,773 completed purchases</div>
+        </div>
+      </div>
+      <div class="tile-dark" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+        <div class="body-sm" style="color:rgba(255,255,255,.7)">Overall: purchases ÷ clicks, full funnel</div>
+        <div style="font-size:28px;font-weight:600;color:#fff">1.79%</div>
+      </div>
+    </div>
+
+    <div style="font-size:13px;font-weight:700;margin-bottom:12px">Campaign highlights</div>
+    <div class="tile" style="padding:0;overflow:hidden;margin-bottom:20px">
+      <div class="row-head">
+        <div class="cell-label">Campaign</div><div class="cell-label" style="text-align:right">Spend</div><div class="cell-label" style="text-align:right">Orders</div><div class="cell-label" style="text-align:right">CTR</div><div class="cell-label" style="text-align:right">CPA</div>
+      </div>
+      <div class="row-table">
+        <div style="font-weight:700;font-size:13px">Top Volume Driver</div>
+        <div style="text-align:right" class="body-sm">$31,236</div><div style="text-align:right;font-weight:700">557</div><div style="text-align:right" class="body-sm">1.32%</div><div style="text-align:right;font-weight:600">$56.08</div>
+      </div>
+      <div class="row-table">
+        <div style="font-weight:700;font-size:13px">Top Efficiency at Scale</div>
+        <div style="text-align:right" class="body-sm">$17,583</div><div style="text-align:right;font-weight:700">303</div><div style="text-align:right;font-weight:700;color:#0064e0">3.53%</div><div style="text-align:right;font-weight:600">$58.03</div>
+      </div>
+      <div class="row-table">
+        <div style="font-weight:700;font-size:13px">Best CPA, 20+ orders</div>
+        <div style="text-align:right" class="body-sm">$2,337</div><div style="text-align:right;font-weight:700">56</div><div style="text-align:right;font-weight:700;color:#0064e0">5.17%</div><div style="text-align:right;font-weight:700;color:#0064e0">$41.73</div>
+      </div>
+      <div class="row-table" style="background:#f1f4f7">
+        <div style="font-weight:700;font-size:13px">Top CTR, $1K+ budget</div>
+        <div style="text-align:right" class="body-sm">$1,546</div><div style="text-align:right;font-weight:700">18</div><div style="text-align:right;font-weight:700;color:#0064e0;font-size:18px">5.55%</div><div style="text-align:right" class="body-sm">$85.88</div>
+      </div>
+    </div>
+    </div>
+    </div>
+  </details>
+
+      </div>
+</div>
+</section>
+
+<!-- ============ HOA.PLAYER ============ -->
+<section id="hoa" style="background:linear-gradient(180deg,#eef2fb 0%,#f6f8fd 55%,#f8fafd 100%);padding:32px 0 80px" data-screen-label="HOA.PLAYER">
+<div style="max-width:1280px;margin:0 auto;padding:0 32px">
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+    <div style="width:52px;height:52px;border-radius:50%;background:#1e3a8a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;flex-shrink:0">03</div>
+    <div class="eyebrow" style="margin-bottom:0;color:#1e3a8a;font-size:15px">HOA.PLAYER</div>
+  </div>
+  <div class="card reveal">
+    <div style="margin-bottom:20px">
+      <div class="eyebrow" style="color:#1e3a8a">MAY 2024 – MAR 2025</div>
+      <h3 class="role-title" style="font-family:'Newsreader',Georgia,serif;font-size:36px;font-weight:600;letter-spacing:-0.5px;color:#0a1317">Visual Creative</h3>
+    </div>
+
+    <p class="body-md" style="max-width:680px;margin-bottom:28px">Concepts, visuals, and content for three campaigns, plus a trade fair appearance.<br></p>
+
+    <div class="eyebrow" style="color:#1e3a8a">CAMPAIGN 1: HOA.FIT</div>
+    <div class="bg-cover" style="width:100%;aspect-ratio:3/1;border-radius:20px;margin-bottom:28px;background-image:url('./hoa-fit-mqji6j10.jpg')"></div>
+
+    <div class="eyebrow" style="color:#1e3a8a">CAMPAIGN 2: HOA.CLOSET</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:28px" class="feature-grid row-fixed">
+      <div class="bg-cover" style="width:100%;aspect-ratio:4/5;border-radius:16px;background-image:url('./hoa-closet---hoa-coquette-mqji8fh4.jpg')"></div>
+      <div class="bg-cover" style="width:100%;aspect-ratio:4/5;border-radius:16px;background-image:url('./hoa-closet---hoa-lace-mqji8wco.jpg')"></div>
+      <div class="bg-cover" style="width:100%;aspect-ratio:4/5;border-radius:16px;background-image:url('./hoa-closet---hoa-hologram-mqji9tuh.jpg')"></div>
+    </div>
+
+    <div class="eyebrow" style="color:#1e3a8a">CAMPAIGN 3: HOACHOINHAC</div>
+    <div class="bg-cover" style="width:100%;aspect-ratio:3/1;border-radius:20px;margin-bottom:28px;background-image:url('./hoachoinhac-mqjietl6.jpg')"></div>
+
+    <div class="split" style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div class="tile">
+        <div style="font-size:15px;font-weight:700;margin-bottom:6px">Campaign work</div>
+        <p class="body-sm">Concepts built to be sent, not just received.</p>
+      </div>
+      <div class="tile">
+        <div style="font-size:15px;font-weight:700;margin-bottom:6px">Retention diagnosis</div>
+        <p class="body-sm">Found the exact point customers stopped ordering.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============ SIC-FTU ============ -->
+<section id="sic" style="background:linear-gradient(180deg,#e9f5fb 0%,#f4fafd 55%,#f8fbfd 100%);padding:32px 0 80px" data-screen-label="SIC-FTU">
+<div style="max-width:1280px;margin:0 auto;padding:0 32px">
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+    <div style="width:52px;height:52px;border-radius:8px;background:#0284c7;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;flex-shrink:0">04</div>
+    <div class="eyebrow" style="margin-bottom:0;color:#0284c7;font-size:15px">SIC-FTU</div>
+  </div>
+  <div class="card reveal">
+    <div style="margin-bottom:20px">
+      <div class="eyebrow" style="color:#0284c7">OCT 2022 – JUL 2024 · STUDENT CLUB</div>
+      <h3 class="role-title" style="font-family:'Newsreader',Georgia,serif;font-size:36px;font-weight:600;letter-spacing:-0.5px;color:#0a1317">Vice Head of Communications</h3>
+    </div>
+
+    <p class="body-md" style="max-width:680px;margin-bottom:28px">Led a 15-person communications team and served as Visual Lead for I-INVEST! 2024, connecting online content to a live event for 1,500+ attendees.</p>
+
+    <div class="eyebrow" style="color:#0284c7">IMPACT</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:32px" class="stat-grid">
+      <div class="tile">
+        <div class="stat-num" style="color:#0284c7">1,500+</div>
+        <div style="font-weight:700;font-size:13px;margin-top:6px">I-INVEST! 2024</div>
+        <div class="body-sm">Attendees, Visual Lead</div>
+      </div>
+      <div class="tile">
+        <div class="stat-num" style="color:#0284c7">4</div>
+        <div style="font-weight:700;font-size:13px;margin-top:6px">Annual Seminars</div>
+        <div class="body-sm">500+ students per session</div>
+      </div>
+      <div class="tile">
+        <div class="stat-num" style="color:#0284c7">~72M VND</div>
+        <div style="font-weight:700;font-size:13px;margin-top:6px">Revenue</div>
+        <div class="body-sm">2 training courses</div>
+      </div>
+    </div>
+
+    <div class="eyebrow" style="color:#0284c7">COLLECTIONS</div>
+    <div style="margin-bottom:20px">
+      <div style="font-size:12px;font-weight:700;color:#0284c7;text-transform:uppercase;margin-bottom:10px">I-INVEST!</div>
+      <div class="bg-cover" style="width:100%;aspect-ratio:1920/731;border-radius:16px;margin-bottom:12px;background-image:url('./banner-mqj090vh.jpg')"></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" class="feature-grid">
+        <div class="bg-cover" style="width:100%;aspect-ratio:1/1;border-radius:16px;background-image:url('./key-visual-mqj09bwf.jpg')"></div>
+        <div class="bg-cover" style="width:100%;aspect-ratio:1/1;border-radius:16px;background-image:url('./m-n-mqj09pix.jpg')"></div>
+        <div class="bg-cover" style="width:100%;aspect-ratio:1/1;border-radius:16px;background-image:url('./promo-mqj0a5rz.jpg')"></div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:12px;font-weight:700;color:#0284c7;text-transform:uppercase;margin-bottom:10px">SIC 16th Anniversary</div>
+      <div style="display:grid;grid-template-columns:2.6fr 1fr;gap:12px" class="split">
+        <div class="bg-cover" style="width:100%;aspect-ratio:1920/730;border-radius:16px;background-image:url('./banner-mqj0alqs.jpg')"></div>
+        <div class="bg-cover" style="width:100%;aspect-ratio:1/1;border-radius:16px;background-image:url('./key-visual-mqj0b25c.jpg')"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Contact -->
+<section id="contact" style="background:#0a1317;padding:72px 32px">
+  <div style="max-width:680px;margin:0 auto;text-align:center;color:#ffffff">
+    <div class="eyebrow" style="color:rgba(255,255,255,.6)">CONTACT</div>
+    <h2 class="contact-title" style="font-family:'Newsreader',Georgia,serif;font-size:44px;font-weight:600;line-height:1.17;letter-spacing:-0.5px;color:#fff;margin-bottom:16px">NONG XUAN DAT</h2>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+      <a class="btn-primary" href="mailto:nxdat2924@gmail.com" style="background:#ffffff;color:#0a1317">nxdat2924@gmail.com</a>
+      <a class="btn-secondary" href="tel:0853491956" style="border-color:#ffffff;color:#ffffff">0853 491 956</a>
+    </div>
+  </div>
+</section>
+
+<footer style="padding:28px;border-top:1px solid #dee3e9;text-align:center;font-size:12px;color:#8595a4">
+  © 2026 Nông Xuân Đạt
+</footer>
+
+<script>
+(function(){
+  var nav = document.querySelector('nav.site-nav');
+  var toc = document.getElementById('toc');
+  var revealEls = document.querySelectorAll('.reveal');
+  revealEls.forEach(function(el){ el.classList.add('pre-reveal'); });
+  if (nav && toc) {
+    var tocObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.boundingClientRect.top < 0 && !e.isIntersecting) { nav.classList.remove('nav-hidden'); }
+        else if (e.isIntersecting || e.boundingClientRect.top > 0) { nav.classList.add('nav-hidden'); }
+      });
+    }, { threshold: 0 });
+    tocObs.observe(toc);
+  }
+  var revealObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) { e.target.classList.add('in-view'); e.target.classList.remove('pre-reveal'); }
+      else { e.target.classList.remove('in-view'); e.target.classList.add('pre-reveal'); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  revealEls.forEach(function(el){ revealObs.observe(el); });
+})();
+</script>
+
+</body>
+</html>

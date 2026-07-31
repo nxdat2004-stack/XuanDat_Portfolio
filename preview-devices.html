@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<title>Device Preview</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#e8e8e6;font-family:-apple-system,Helvetica,Arial,sans-serif}
+  .bar{padding:14px 20px;font-size:13px;font-weight:700;color:#333;background:#fff;border-bottom:1px solid #ddd}
+  .row{display:flex;gap:20px;padding:20px;overflow-x:auto;align-items:flex-start}
+  .device{flex-shrink:0;background:#fff;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.12);overflow:hidden}
+  .device .label{font-size:12px;font-weight:700;padding:10px 14px;color:#444;background:#f4f4f2;border-bottom:1px solid #e5e5e3;display:flex;justify-content:space-between}
+  .device .label span{font-weight:400;color:#888}
+  iframe{border:none;display:block}
+</style></head>
+<body>
+<div class="bar">Live device preview — each pane loads the real page at its real width, so responsive rules apply exactly as they would on that device.</div>
+<div class="row">
+  <div class="device">
+    <div class="label">Mobile<span>390 × 844</span></div>
+    <iframe src="./index.html" width="390" height="800"></iframe>
+  </div>
+  <div class="device">
+    <div class="label">Tablet<span>820 × 1180</span></div>
+    <iframe src="./index.html" width="820" height="800"></iframe>
+  </div>
+  <div class="device">
+    <div class="label">Desktop<span>1440 × 900</span></div>
+    <iframe src="./index.html" width="1440" height="800"></iframe>
+  </div>
+</div>
+</body></html>
